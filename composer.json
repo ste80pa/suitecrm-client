@@ -2,7 +2,7 @@
 	"name" : "ste80pa/suitecrm-client",
 	"description" : "SuiteCRM Soap and Rest Client",
 	"autoload" : {
-		"psr-0" : {
+		"psr-4" : {
 			"ste80pa\\SuiteCRMClient\\" : "src/"
 		}
 	},
