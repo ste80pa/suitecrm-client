@@ -61,8 +61,11 @@ class SoapClient extends Client
      */
     public function Invoke($function, BaseRequest $request)
     {
-        if ($request->session == null)
-            $request->session = $this->session->id;
+        if(isset($this->session) && !empty($this->session))
+        {
+            if ($request->session == null)
+                $request->session = $this->session->id;
+        }
         
         $result = null;
         
