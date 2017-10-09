@@ -15,7 +15,6 @@
 	],
 	"license" : "GPL-3.0",
 	"homepage" : "https://github.com/ste80pa/suitecrm-client",
-	"type" : "library",
 	"keywords" : [
 		"suitecrm",
 		"soap",
