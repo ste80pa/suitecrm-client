@@ -1,9 +1,28 @@
 {
-	"name" : "ste80pa/suite-crm-client",
+	"name" : "ste80pa/suitecrm-client",
 	"description" : "SuiteCRM Soap and Rest Client",
 	"autoload" : {
 		"psr-0" : {
-			"ste80pa\\SuiteCRMClient" : "ste80pa/SuiteCRMClient"
+			"ste80pa\\SuiteCRMClient" : "src"
 		}
+	},
+	"authors" : [{
+			"name" : "Stefano Pallozzi",
+			"email" : "ste80pa@gmail.com",
+			"homepage" : "https://github.com/ste80pa",
+			"role" : "Developer"
+		}
+	],
+	"license" : "GPL-3.0",
+	"homepage" : "https://github.com/ste80pa/suitecrm-client",
+	"type" : "library",
+	"keywords" : [
+		"suitecrm",
+		"soap",
+		"rest",
+		"client"
+	],
+	"require" : {
+		"php" : ">=5.3.0"
 	}
 }
