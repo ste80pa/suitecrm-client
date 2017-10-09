@@ -7,7 +7,7 @@ Simple library for cummication with SuiteCRM via Soap or  Restful API endpoints
 ```php
 <?php
 
-include('vendor/autoload');
+include('vendor/autoload.php');
 
 use ste80pa\SuiteCRMClient\Types\Requests\GetEntryListRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\LoginRequest;
