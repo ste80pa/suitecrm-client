@@ -19,7 +19,7 @@ use ste80pa\SuiteCRMClient\SoapClient;
 
 $url = 'your sugar crm host';
 $username = 'your username';
-$password = 'your passowrd';
+$password = 'your password';
 
 $soap = new SoapClient("http://{$url}/service/v4_1/soap.php?wsdl");
 $soap->Login(new LoginRequest($username, $password));
@@ -51,7 +51,7 @@ use ste80pa\SuiteCRMClient\RestClient;
 
 $url = 'your sugar crm host';
 $username = 'your username';
-$password = 'your passowrd';
+$password = 'your password';
 
 $soap = new RestClient("http://{$url}/service/v4_1/rest.php");
 $soap->Login(new LoginRequest($username, $password));
