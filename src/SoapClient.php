@@ -24,40 +24,57 @@ class SoapClient extends Client
      *
      * @var array
      */
-    protected $options = array();
+    protected $options = array
+    (
+        'classmap' => array
+        (
+            'get_entry_list_result_version2' => GetEntryListResponse::class,               
+            'entry_value' => EntryValue::class,
+            'link_value2' => LinkValue::class,
+            'entry_list'  => NameValueList::class,         
+        ),
+       
+        'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9,
+    );
 
     /**
      *
-     * @param string $wsdl
-     * @param array $options
+     * @param string $url url for suite crm in example http://suitecrm.doamin.local
+     * @param string $verion version
+     * @param boolean $nonWsdlMode if true works in non wsdl mode. Preferred due a bug in PhpSoap that cause memeory exausting exception @see https://bugs.php.net/bug.php?id=70900
+     * @param array $options options @see http://php.net/manual/en/soapclient.soapclient.php
      * @throws \Exception
      */
-    public function __construct($wsdl, $options = array())
+    public function __construct($url, $version = 'v4_1', $nonWsdlMode = true, $options = array())
     {
         if (! extension_loaded('soap')) {
             throw new \Exception("Soap Extention is required");
         }
 
-        $this->options = array(
-            'classmap' => array(
-                'get_entry_list_result_version2' => GetEntryListResponse::class,               
-                'entry_value' => EntryValue::class,
-                'link_value2' => LinkValue::class,
-                'entry_list'  => NameValueList::class,         
-            ),
-           
-            'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9,
-            'trace' => false,
-            'stream_context' =>  stream_context_create(array(
+        $wsdl = null;
+
+        if($nonWsdlMode)
+        {
+            $this->options['location'] = "{$url}/service/{$version}/soap.php";
+            $this->options['uri']      = "{$url}/service/{$version}/";
+        }
+        else
+        {
+            $wdsl = "{$url}/service/{$version}/soap.php?wsdl";
+        }
+    
+        $this->options['stream_context'] = stream_context_create(
+            array(
                 'ssl' => array(
                     'verify_peer' => false,
                     'verify_peer_name' => false,
                     'allow_self_signed' => true
                 )
-            ))
-           
-        );
+            )
+        );  
         
+        $this->options = array_merge($this->options, $options);
+
         $this->client = new \SoapClient($wsdl, $this->options);
     }
 

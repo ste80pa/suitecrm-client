@@ -15,7 +15,7 @@ final class AuthenticationTest extends TestCase
 	
 	public function setUp()
 	{
-		$this->client = new RestClient($GLOBALS['suitecrm_rest_host']);		
+		$this->client = new RestClient($GLOBALS['suitecrm_host']);		
 	}
 	
 	public function tearDown()

@@ -19,12 +19,13 @@ class RestClient extends Client
      * 
      * @throws \Exception
      */
-    public function __construct($url)
+    public function __construct($url, $version = 'v4_1')
     {
         if (! extension_loaded('curl')) {
             throw new \Exception("Curl Extention is required");
         }
-        $this->url = $url;
+
+        $this->url = "{$url}/service/{$version}/rest.php";
     }
 
     /**
@@ -86,7 +87,7 @@ class RestClient extends Client
                         return new $returnType(json_decode($result[1]));
             break;
             default:
-                throw new Excepion("Received " + $http_status);
+                throw new Exception("Received " + $http_status);
         }
         return null;
     }

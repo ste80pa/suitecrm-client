@@ -10,6 +10,6 @@ final class SoapEntryTest extends EntryTest
 {
 	public function initClient()
 	{
-		return new SoapClient($GLOBALS['suitecrm_soap_host']);	
+		return new SoapClient($GLOBALS['suitecrm_host']);	
 	}
 }

@@ -22,8 +22,7 @@
     <!-- CONFIGURATION -->
     <php>
 	<includePath>./test/common</includePath>
-        <var name="suitecrm_rest_host" value="https://demo.suiteondemand.com/service/v4_1/rest.php"/>
-        <var name="suitecrm_soap_host" value="https://demo.suiteondemand.com/service/v4_1/soap.php?wsdl"/>
+        <var name="suitecrm_host" value="https://demo.suiteondemand.com"/>
         <var name="suitecrm_username"  value="will"/>
         <var name="suitecrm_password"  value="will"/>
     </php>

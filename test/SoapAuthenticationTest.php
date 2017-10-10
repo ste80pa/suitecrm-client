@@ -15,7 +15,7 @@ final class SoapAuthenticationTest extends TestCase
 
 	public function setUp()
 	{
-		$this->client = new SoapClient($GLOBALS['suitecrm_soap_host']);
+		$this->client = new SoapClient($GLOBALS['suitecrm_host']);
 	}
 	
 	public function tearDown()

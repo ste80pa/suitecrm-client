@@ -10,6 +10,6 @@ final class RestEntryTest extends EntryTest
 {
 	public function initClient()
 	{
-		return new RestClient($GLOBALS['suitecrm_rest_host']);	
+		return new RestClient($GLOBALS['suitecrm_host']);	
 	}
 }
