@@ -1,16 +1,31 @@
 <?php
 namespace ste80pa\SuiteCRMClient\Types\Responses;
 
-use ste80pa\SuiteCRMClient\Types\BaseRequest;
+use ste80pa\SuiteCRMClient\Types\BaseResponse;
 
 /**
  *
  * @author Stefano Pallozzi
  *
  */
-class GetEntryListResponse extends BaseRequest {
+class GetEntryListResponse extends BaseResponse {
     /**
-     * @var mixed
+     * @var integer
      */
-    public $return;
+    public $result_count;
+
+    /**
+     * @var integer
+     */
+    public $total_count;
+
+    /**
+     * @var integer
+     */
+    public $next_offset;
+
+    /**
+     * @var array
+     */
+    public $entry_list = array();
 }

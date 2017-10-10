@@ -1,14 +1,12 @@
 <?php
 namespace ste80pa\SuiteCRMClient\Types\Responses;
-
-use ste80pa\SuiteCRMClient\Types\BaseRequest;
-
+use ste80pa\SuiteCRMClient\Types\BaseResponse;
 /**
  *
  * @author Stefano Pallozzi
  *
  */
-class GetUserTeamIdResponse extends BaseRequest {
+class GetUserTeamIdResponse extends BaseResponse {
     /**
      * @var string
      */

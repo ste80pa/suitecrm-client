@@ -13,12 +13,37 @@ class EntryValue {
      * @var string
      */
     public $id;
+    
     /**
      * 
      * @var string
      */
     public $module_name;
     
+    /**
+     * @param object|array|NULL 
+     */
+    public function __construct($data = null)
+    {
+        if($data == null)
+            return;
+
+        if(is_array($data))
+        {
+            $this->id = $data['id'];
+            $this->module_name = $data['module_name'];
+            $this->name_value_list = $data['name_value_list'];
+            return;
+        }
+
+        if(is_object($data))
+        {
+            $this->id = $data->id;
+            $this->module_name = $data->module_name;
+            $this->name_value_list = $data->name_value_list;
+            return;
+        }
+    }
     /**
      * 
      * @param string $name
@@ -29,9 +54,11 @@ class EntryValue {
         if($name =='name_value_list')
         {
             foreach($value as $o)
-                $this->{$o->name} = $o->value;
-            
-             return;
+                if(is_array($o))
+                    $this->{$o['name']} = $o['value'];
+                else
+                    $this->{$o->name} = $o->value;
+            return;
         }
 
         $this->{$name} = $value;      

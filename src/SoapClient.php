@@ -6,6 +6,14 @@ use ste80pa\SuiteCRMClient\Types\BaseRequest;
 use ste80pa\SuiteCRMClient\Types\LinkValue;
 use ste80pa\SuiteCRMClient\Types\Responses\GetEntryListResponse;
 
+class NameValueList {
+
+    public function __set($name, $value)
+    {
+        die(print_r($value,1));
+        $this->$name = $value;
+    }
+}
 /**
  * 
  * @author Stefano Pallozzi
@@ -37,20 +45,30 @@ class SoapClient extends Client
         if (! extension_loaded('soap')) {
             throw new \Exception("Soap Extention is required");
         }
-        
+
         $this->options = array(
             'classmap' => array(
-                'get_entry_list_result_version2' => GetEntryListResponse::class,
+                'get_entry_list_result_version2' => GetEntryListResponse::class,               
                 'entry_value' => EntryValue::class,
-                'link_value2' => LinkValue::class
+                'link_value2' => LinkValue::class,
+                'entry_list'  => NameValueList::class,         
             ),
+           
             'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9,
-            'trace' => true
-        
+            'trace' => false,
+            'stream_context' =>  stream_context_create(array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            ))
+           
         );
+        
         $this->client = new \SoapClient($wsdl, $this->options);
     }
-    
+
     /**
      * Parameter types (and order) must be the same as what the current wsdl defines.
      * 
@@ -59,8 +77,8 @@ class SoapClient extends Client
      * @param string $returnType
      * @throws \Exception
      */
-    public function Invoke($function, BaseRequest $request)
-    {
+    public function Invoke($function, BaseRequest $request, $returnType = null)
+    {        
         if(isset($this->session) && !empty($this->session))
         {
             if ($request->session == null)
@@ -71,12 +89,18 @@ class SoapClient extends Client
         
         try {
             $result = $this->client->__call($function, $request->toArray());
+            
+            $properClass = new $returnType();
+
+            foreach($result as $n => $v)
+                    $properClass->$n = $v;
+
         } catch (\Exception $e) {
             if (is_soap_fault($result)) {
                 throw new \Exception("fault");
             }
         }
         
-        return $result;
+        return $properClass;
     }
 }

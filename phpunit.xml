@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
+         bootstrap="phpunit-bootstrap.php" 
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         stopOnRisky="false"
+         verbose="false"
+         colors="true"
+        >
+    <testsuites>
+        <testsuite name="auth">
+            <file>./test/RestAuthenticationTest.php</file>
+            <file>./test/SoapAuthenticationTest.php</file>
+        </testsuite>
+        <testsuite name="entry">
+            <file>./test/RestEntryTest.php</file>
+            <file>./test/SoapEntryTest.php</file>  
+        </testsuite>
+    </testsuites>
+    <!-- CONFIGURATION -->
+    <php>
+	<includePath>./test/common</includePath>
+        <var name="suitecrm_rest_host" value="https://demo.suiteondemand.com/service/v4_1/rest.php"/>
+        <var name="suitecrm_soap_host" value="https://demo.suiteondemand.com/service/v4_1/soap.php?wsdl"/>
+        <var name="suitecrm_username"  value="will"/>
+        <var name="suitecrm_password"  value="will"/>
+    </php>
+</phpunit>
+

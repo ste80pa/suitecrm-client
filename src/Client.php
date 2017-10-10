@@ -29,6 +29,7 @@ use ste80pa\SuiteCRMClient\Types\Requests\SetEntryRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\SetNoteAttachmentRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\SetRelationshipRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\SetRelationshipsRequest;
+
 use ste80pa\SuiteCRMClient\Types\Responses\GetAvailableModulesResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\GetDocumentRevisionResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\GetEntriesCountResponse;
@@ -77,10 +78,10 @@ abstract class Client
     * @param string $returnType
     * @throws \Exception
     */
-    abstract public function Invoke($function, BaseRequest $request);
+    abstract public function Invoke($function, BaseRequest $request, $returnType = null);
     
     /**
-     * @param LoginRequest$request
+     * @param LoginRequest $request
      * @return LoginResponse
      */
     function Login(LoginRequest $request)
@@ -90,21 +91,22 @@ abstract class Client
             return;
         }
         
-        $this->session = $this->Invoke('login', $request);
+        $this->session = $this->Invoke('login', $request, LoginResponse::class);
         file_put_contents("session.json", json_encode($this->session));
         return $this->session;
     }
     /**
-     * @param LogoutRequest$request
+     * 
      * @return LogoutResponse
      */
-    function Logout(LogoutRequest $request)
+    function Logout()
     {
         
         if (file_exists("session.json"))
             unlink("session.json");
             
-            return $this->Invoke('logout', $request);
+        $this->Invoke('logout', new LogoutRequest(), LogoutResponse::class);
+        return new LogoutResponse();
     }
     /**
      * @param GetEntryRequest$request
@@ -112,7 +114,7 @@ abstract class Client
      */
     function GetEntry(GetEntryRequest $request)
     {
-        return $this->Invoke('get_entry', $request);
+        return $this->Invoke('get_entry', $request, GetEntryResponse::class);
     }
     /**
      * @param GetEntriesRequest$request
@@ -120,7 +122,7 @@ abstract class Client
      */
     function GetEntries(GetEntriesRequest $request)
     {
-        return $this->Invoke('get_entries', $request);
+        return $this->Invoke('get_entries', $request, GetEntriesResponse::class);
     }
     /**
      * @param GetEntryListRequest$request
@@ -128,7 +130,7 @@ abstract class Client
      */
     function GetEntryList(GetEntryListRequest $request)
     {
-        return $this->Invoke('get_entry_list', $request);
+        return $this->Invoke('get_entry_list', $request, GetEntryListResponse::class);
     }
     /**
      * @param SetRelationshipRequest$request

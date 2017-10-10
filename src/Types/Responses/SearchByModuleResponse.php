@@ -1,14 +1,12 @@
 <?php
 namespace ste80pa\SuiteCRMClient\Types\Responses;
-
-use ste80pa\SuiteCRMClient\Types\BaseRequest;
-
+use ste80pa\SuiteCRMClient\Types\BaseResponse;
 /**
  *
  * @author Stefano Pallozzi
  *
  */
-class SearchByModuleResponse extends BaseRequest {
+class SearchByModuleResponse extends BaseResponse {
     /**
      * @var mixed
      */

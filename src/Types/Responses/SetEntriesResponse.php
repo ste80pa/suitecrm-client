@@ -1,14 +1,14 @@
 <?php
 namespace ste80pa\SuiteCRMClient\Types\Responses;
 
-use ste80pa\SuiteCRMClient\Types\BaseRequest;
+use ste80pa\SuiteCRMClient\Types\BaseResponse;
 
 /**
  *
  * @author Stefano Pallozzi
  *
  */
-class SetEntriesResponse extends BaseRequest {
+class SetEntriesResponse extends BaseResponse {
     /**
      * @var mixed
      */
