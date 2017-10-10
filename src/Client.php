@@ -138,7 +138,7 @@ abstract class Client
      */
     function SetRelationship(SetRelationshipRequest $request)
     {
-        return $this->Invoke('set_relationship', $request);
+        return $this->Invoke('set_relationship', $request, SetRelationshipResponse::class);
     }
     /**
      * @param SetRelationshipsRequest$request
@@ -146,7 +146,7 @@ abstract class Client
      */
     function SetRelationships(SetRelationshipsRequest $request)
     {
-        return $this->Invoke('set_relationships', $request);
+        return $this->Invoke('set_relationships', $request, SetRelationshipsResponse::class);
     }
     /**
      * @param GetRelationshipsRequest$request
@@ -154,7 +154,7 @@ abstract class Client
      */
     function GetRelationships(GetRelationshipsRequest $request)
     {
-        return $this->Invoke('get_relationships', $request);
+        return $this->Invoke('get_relationships', $request, GetRelationshipsResponse::class);
     }
     /**
      * @param SetEntryRequest$request
@@ -162,7 +162,7 @@ abstract class Client
      */
     function SetEntry(SetEntryRequest $request)
     {
-        return $this->Invoke('set_entry', $request);
+        return $this->Invoke('set_entry', $request, SetEntryResponse::class);
     }
     /**
      * @param SetEntriesRequest$request
@@ -170,7 +170,7 @@ abstract class Client
      */
     function SetEntries(SetEntriesRequest $request)
     {
-        return $this->Invoke('set_entries', $request);
+        return $this->Invoke('set_entries', $request, SetEntriesResponse::class);
     }
     /**
      * @param GetServerInfoRequest$request
@@ -178,7 +178,7 @@ abstract class Client
      */
     function GetServerInfo(GetServerInfoRequest $request)
     {
-        return $this->Invoke('get_server_info', $request);
+        return $this->Invoke('get_server_info', $request, GetServerInfoResponse::class);
     }
     /**
      * @param GetUserIdRequest$request
@@ -186,7 +186,7 @@ abstract class Client
      */
     function GetUserId(GetUserIdRequest $request)
     {
-        return $this->Invoke('get_user_id', $request);
+        return $this->Invoke('get_user_id', $request, GetUserIdResponse::class);
     }
     /**
      * @param GetModuleFieldsRequest$request
@@ -194,7 +194,7 @@ abstract class Client
      */
     function GetModuleFields(GetModuleFieldsRequest $request)
     {
-        return $this->Invoke('get_module_fields', $request);
+        return $this->Invoke('get_module_fields', $request, GetModuleFieldsResponse::class);
     }
     /**
      * @param SeamlessLoginRequest$request
@@ -202,7 +202,7 @@ abstract class Client
      */
     function SeamlessLogin(SeamlessLoginRequest $request)
     {
-        return $this->Invoke('seamless_login', $request);
+        return $this->Invoke('seamless_login', $request, SeamlessLoginResponse::class);
     }
     /**
      * @param SetNoteAttachmentRequest$request
@@ -210,7 +210,7 @@ abstract class Client
      */
     function SetNoteAttachment(SetNoteAttachmentRequest $request)
     {
-        return $this->Invoke('set_note_attachment', $request);
+        return $this->Invoke('set_note_attachment', $request, SetNoteAttachmentResponse::class);
     }
     /**
      * @param GetNoteAttachmentRequest$request
@@ -218,7 +218,7 @@ abstract class Client
      */
     function GetNoteAttachment(GetNoteAttachmentRequest $request)
     {
-        return $this->Invoke('get_note_attachment', $request);
+        return $this->Invoke('get_note_attachment', $request, GetNoteAttachmentResponse::class);
     }
     /**
      * @param SetDocumentRevisionRequest$request
@@ -226,7 +226,7 @@ abstract class Client
      */
     function SetDocumentRevision(SetDocumentRevisionRequest $request)
     {
-        return $this->Invoke('set_document_revision', $request);
+        return $this->Invoke('set_document_revision', $request, SetDocumentRevisionResponse::class);
     }
     /**
      * @param GetDocumentRevisionRequest$request
@@ -234,7 +234,7 @@ abstract class Client
      */
     function GetDocumentRevision(GetDocumentRevisionRequest $request)
     {
-        return $this->Invoke('get_document_revision', $request);
+        return $this->Invoke('get_document_revision', $request, GetDocumentRevisionResponse::class);
     }
     /**
      * @param SearchByModuleRequest$request
@@ -242,7 +242,7 @@ abstract class Client
      */
     function SearchByModule(SearchByModuleRequest $request)
     {
-        return $this->Invoke('search_by_module', $request);
+        return $this->Invoke('search_by_module', $request, SearchByModuleResponse::class);
     }
     /**
      * @param GetAvailableModulesRequest$request
@@ -250,7 +250,7 @@ abstract class Client
      */
     function GetAvailableModules(GetAvailableModulesRequest $request)
     {
-        return $this->Invoke('get_available_modules', $request);
+        return $this->Invoke('get_available_modules', $request, GetAvailableModulesResponse::class);
     }
     /**
      * @param GetUserTeamIdRequest$request
@@ -258,7 +258,7 @@ abstract class Client
      */
     function GetUserTeamId(GetUserTeamIdRequest $request)
     {
-        return $this->Invoke('get_user_team_id', $request);
+        return $this->Invoke('get_user_team_id', $request, GetUserTeamIdResponse::class);
     }
     /**
      * @param SetCampaignMergeRequest$request
@@ -266,7 +266,7 @@ abstract class Client
      */
     function SetCampaignMerge(SetCampaignMergeRequest $request)
     {
-        return $this->Invoke('set_campaign_merge', $request);
+        return $this->Invoke('set_campaign_merge', $request, SetCampaignMergeResponse::class);
     }
     /**
      * @param GetEntriesCountRequest$request
@@ -274,7 +274,7 @@ abstract class Client
      */
     function GetEntriesCount(GetEntriesCountRequest $request)
     {
-        return $this->Invoke('get_entries_count', $request);
+        return $this->Invoke('get_entries_count', $request, GetEntriesCountResponse::class);
     }
     /**
      * @param GetModuleFieldsMd5Request$request
@@ -282,7 +282,7 @@ abstract class Client
      */
     function GetModuleFieldsMd5(GetModuleFieldsMd5Request $request)
     {
-        return $this->Invoke('get_module_fields_md5', $request);
+        return $this->Invoke('get_module_fields_md5', $request, GetModuleFieldsMd5Response::class);
     }
     /**
      * @param GetLastViewedRequest$request
@@ -290,7 +290,7 @@ abstract class Client
      */
     function GetLastViewed(GetLastViewedRequest $request)
     {
-        return $this->Invoke('get_last_viewed', $request);
+        return $this->Invoke('get_last_viewed', $request, GetLastViewedResponse::class);
     }
     /**
      * @param GetUpcomingActivitiesRequest$request
@@ -298,7 +298,7 @@ abstract class Client
      */
     function GetUpcomingActivities(GetUpcomingActivitiesRequest $request)
     {
-        return $this->Invoke('get_upcoming_activities', $request);
+        return $this->Invoke('get_upcoming_activities', $request, GetUpcomingActivitiesResponse::class);
     }
     /**
      * @param GetModifiedRelationshipsRequest$request
@@ -306,6 +306,6 @@ abstract class Client
      */
     function GetModifiedRelationships(GetModifiedRelationshipsRequest $request)
     {
-        return $this->Invoke('get_modified_relationships', $request);
+        return $this->Invoke('get_modified_relationships', $request, GetModifiedRelationshipsResponse::class);
     }
 }
