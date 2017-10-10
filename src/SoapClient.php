@@ -6,14 +6,6 @@ use ste80pa\SuiteCRMClient\Types\BaseRequest;
 use ste80pa\SuiteCRMClient\Types\LinkValue;
 use ste80pa\SuiteCRMClient\Types\Responses\GetEntryListResponse;
 
-class NameValueList {
-
-    public function __set($name, $value)
-    {
-        die(print_r($value,1));
-        $this->$name = $value;
-    }
-}
 /**
  * 
  * @author Stefano Pallozzi
@@ -86,15 +78,17 @@ class SoapClient extends Client
         }
         
         $result = null;
-        
+        $properClass = null;
+
         try {
             $result = $this->client->__call($function, $request->toArray());
-            
             $properClass = new $returnType();
-
-            foreach($result as $n => $v)
+            
+            if($properClass != null)
+            {
+                foreach($result as $n => $v)
                     $properClass->$n = $v;
-
+            }
         } catch (\Exception $e) {
             if (is_soap_fault($result)) {
                 throw new \Exception("fault");
