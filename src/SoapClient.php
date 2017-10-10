@@ -21,6 +21,10 @@ class SoapClient extends Client
     protected $client;
 
     /**
+     * @var boolean
+     */
+    protected $nonWsdlMode = true;
+    /**
      *
      * @var array
      */
@@ -50,6 +54,8 @@ class SoapClient extends Client
         if (! extension_loaded('soap')) {
             throw new \Exception("Soap Extention is required");
         }
+
+        $this->nonWsdlMode = $nonWsdlMode;
 
         $wsdl = null;
 
@@ -97,21 +103,20 @@ class SoapClient extends Client
         $result = null;
         $properClass = null;
 
-        try {
-            $result = $this->client->__call($function, $request->toArray());
+        $result = $this->client->__call($function, $request->toArray());
+            
+        if($this->nonWsdlMode)
+        {
+            $properClass = new $returnType($result);
+        }
+        else
+        {
             $properClass = new $returnType();
             
-            if($properClass != null)
-            {
-                foreach($result as $n => $v)
-                    $properClass->$n = $v;
-            }
-        } catch (\Exception $e) {
-            if (is_soap_fault($result)) {
-                throw new \Exception("fault");
-            }
+            foreach($result as $n => $v)
+                $properClass->$n = $v;
+            
         }
-        
         return $properClass;
     }
 }

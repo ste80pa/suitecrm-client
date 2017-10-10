@@ -25,7 +25,7 @@ class BaseResponse
                         $this->{$v['name']} = $v['value'];
                     else
                         $this->{$v->name} = $v->value;
-
+                
             }
             else if($name == 'entry_list')
             {
