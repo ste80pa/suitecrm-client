@@ -1,5 +1,3 @@
-
-
 <?php
 namespace ste80pa\SuiteCRMClient\Types;
 

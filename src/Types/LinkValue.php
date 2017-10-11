@@ -25,7 +25,7 @@ class LinkValue {
             
             if(is_object($data))
             {
-                $this->id = $data->link_value;
+                $this->link_value = $data->link_value;
                 return;
             }
     }
