@@ -7,12 +7,28 @@ namespace ste80pa\SuiteCRMClient\Types;
  *
  */
 class LinkValue {
-    /**
-     * 
-     * @var string
-     */
-    public $name;
    
+   /**
+    * 
+    * @param object|array|NULL $data
+    */
+    public function __construct($data = null)
+    {
+        if($data == null)
+            return;
+            
+            if(is_array($data))
+            {
+                $this->link_value = $data['link_value'];
+                return;
+            }
+            
+            if(is_object($data))
+            {
+                $this->id = $data->link_value;
+                return;
+            }
+    }
     /**
      * 
      * @param string $name

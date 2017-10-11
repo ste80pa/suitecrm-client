@@ -32,6 +32,11 @@ class BaseResponse
                 foreach($value as $e)
                     $this->entry_list[] = new EntryValue($e);
             }
+            else if($name == 'relationship_list')
+            {
+                foreach($value as $links)
+                    $this->relationship_list[] = new LinkList($links);
+            }
             else
             {
                 $this->{$name} = $value; 
