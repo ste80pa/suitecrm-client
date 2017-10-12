@@ -3,3 +3,8 @@ wsdl
 main.php
 session.json
 .DS_Store
+.buildpath
+.project
+.settings
+vendor
+composer.lock

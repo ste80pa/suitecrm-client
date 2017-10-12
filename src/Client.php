@@ -300,6 +300,7 @@ abstract class Client
     {
         return $this->Invoke('get_upcoming_activities', $request, GetUpcomingActivitiesResponse::class);
     }
+    
     /**
      * @param GetModifiedRelationshipsRequest$request
      * @return GetModifiedRelationshipsResponse

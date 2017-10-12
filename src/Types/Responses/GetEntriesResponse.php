@@ -6,7 +6,7 @@ use ste80pa\SuiteCRMClient\Types\BaseResponse;
  * @author Stefano Pallozzi
  *
  */
-class GetEntriesCountResponse extends BaseResponse {
+class GetEntriesResponse extends BaseResponse {
     /**
      * @var mixed
      */
