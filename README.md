@@ -21,7 +21,7 @@ $url = 'your sugar crm host';
 $username = 'your username';
 $password = 'your password';
 
-$soap = new SoapClient("http://{$url}/service/v4_1/soap.php?wsdl");
+$soap = new SoapClient($url);
 $soap->Login(new LoginRequest($username, $password));
 
 $request = new GetEntryListRequest();
@@ -53,7 +53,7 @@ $url = 'your sugar crm host';
 $username = 'your username';
 $password = 'your password';
 
-$soap = new RestClient("http://{$url}/service/v4_1/rest.php");
+$soap = new RestClient($url);
 $soap->Login(new LoginRequest($username, $password));
 
 $request = new GetEntryListRequest();
