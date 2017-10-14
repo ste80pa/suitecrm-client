@@ -50,9 +50,10 @@ abstract class EntryTest extends TestCase
         $this->assertObjectHasAttribute('next_offset', $response);
         $this->assertObjectHasAttribute('entry_list', $response);
         
-        $this->assertInternalType('integer', $response->result_count);
-    //    $this->assertInternalType('integer', intval($response->total_count ));
-        $this->assertInternalType('integer', $response->next_offset);
+        $this->assertTrue(is_numeric($response->result_count));
+        $this->assertTrue(is_numeric($response->total_count));
+        $this->assertTrue(is_numeric($response->next_offset));
+        
         $this->assertInternalType('array', $response->entry_list);
         
         $this->assertLessThanOrEqual($request->max_results, $response->result_count);

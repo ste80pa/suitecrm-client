@@ -12,17 +12,17 @@ class GetEntryListResponse extends BaseResponse {
     /**
      * @var integer
      */
-    public $result_count;
+    public $result_count = 0;
 
     /**
      * @var integer
      */
-    public $total_count;
+    public $total_count = 0;
 
     /**
      * @var integer
      */
-    public $next_offset;
+    public $next_offset = 0;
 
     /**
      * @var array
