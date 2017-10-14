@@ -50,7 +50,7 @@ class RestClient extends Client
         curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 0);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
        
         if( property_exists($request, 'session'))
             $request->session = $this->session->getId();
