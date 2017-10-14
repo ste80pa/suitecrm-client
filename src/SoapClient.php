@@ -38,7 +38,6 @@ class SoapClient extends Client
             // 'entry_list' => NameValueList::class,
         ),
         
-        'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9,
         'exceptions' => 1,
         'trace' => 0
     );
@@ -81,6 +80,8 @@ class SoapClient extends Client
                 'allow_self_signed' => true
             )
         ));
+        
+        $this->options['compression'] = SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9;
         
         $this->options = array_merge($this->options, $options);
         
