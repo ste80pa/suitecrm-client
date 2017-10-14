@@ -6,10 +6,13 @@ use ste80pa\SuiteCRMClient\Types\BaseRequest;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class GetEntriesCountResponse extends BaseRequest {
+class GetEntriesCountResponse extends BaseRequest
+{
+
     /**
+     *
      * @var mixed
      */
     public $return;

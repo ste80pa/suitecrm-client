@@ -1,14 +1,14 @@
 <?php
 namespace ste80pa\SuiteCRMClient\Types;
 
-use JsonSerializable;
+require_once 'Compat.php';
 
 /**
  *
  * @author Stefano Pallozzi
  *        
  */
-class BaseResponse
+class BaseResponse implements \JsonSerializable
 {
 
     /**
@@ -16,9 +16,19 @@ class BaseResponse
      * @param object|array|NULL $data
      */
     public function __construct($data = null)
+    {          
+        $this->fromData($data);
+    }
+
+    /**
+     * 
+     * @param mixed $data
+     * @return \ste80pa\SuiteCRMClient\Types\BaseResponse
+     */
+    public function fromData($data)
     {
         if ($data == null) {
-            return;
+            return $this;
         }
         
         foreach ($data as $name => $value) {
@@ -42,6 +52,7 @@ class BaseResponse
                 $this->{$name} = $value;
             }
         }
+         return $this;
     }
 
     /**

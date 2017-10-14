@@ -6,10 +6,13 @@ use ste80pa\SuiteCRMClient\Types\BaseResponse;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class GetUserIdResponse extends BaseResponse {
+class GetUserIdResponse extends BaseResponse
+{
+
     /**
+     *
      * @var string
      */
     public $return;

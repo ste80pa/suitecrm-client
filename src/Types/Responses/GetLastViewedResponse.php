@@ -6,10 +6,13 @@ use ste80pa\SuiteCRMClient\Types\BaseResponse;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class GetLastViewedResponse extends BaseResponse {
+class GetLastViewedResponse extends BaseResponse
+{
+
     /**
+     *
      * @var mixed
      */
     public $return;

@@ -6,14 +6,20 @@ use ste80pa\SuiteCRMClient\Types\BaseRequest;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class SetDocumentRevisionRequest extends BaseRequest {
+class SetDocumentRevisionRequest extends BaseRequest
+{
+
     /**
+     * Session ID returned by a previous login call.
+     * 
      * @var string
      */
     public $session;
+
     /**
+     *
      * @var mixed
      */
     public $note;

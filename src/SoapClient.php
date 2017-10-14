@@ -1,10 +1,8 @@
 <?php
 namespace ste80pa\SuiteCRMClient;
 
-use ste80pa\SuiteCRMClient\Types\EntryValue;
 use ste80pa\SuiteCRMClient\Types\BaseRequest;
-use ste80pa\SuiteCRMClient\Types\LinkValue;
-use ste80pa\SuiteCRMClient\Types\Responses\GetEntryListResponse;
+use ste80pa\SuiteCRMClient\Types\BaseResponse;
 
 /**
  *
@@ -32,10 +30,10 @@ class SoapClient extends Client
      */
     protected $options = array(
         'classmap' => array(
-            'get_entry_list_result_version2' => GetEntryListResponse::class,
-            'entry_value' => EntryValue::class,
-            'link_value2' => LinkValue::class
-            // 'entry_list' => NameValueList::class,
+            'get_entry_list_result_version2' => 'ste80pa\SuiteCRMClient\Types\Responses\GetEntryListResponse',
+            'entry_value' => 'ste80pa\SuiteCRMClient\Types\EntryValue',
+            'link_value2' => 'ste80pa\SuiteCRMClient\Types\LinkValue'
+            // 'entry_list' => 'NameValueList::class,
         ),
         
         'exceptions' => 1,
@@ -60,8 +58,8 @@ class SoapClient extends Client
             throw new \Exception("Soap Extention is required");
         }
         
-        $wsdl    = null;
-        $url     = $session->getUrl();
+        $wsdl = null;
+        $url = $session->getUrl();
         $version = $session->getEndpointVersion();
         
         $this->nonWsdlMode = $nonWsdlMode;
@@ -93,27 +91,25 @@ class SoapClient extends Client
      *
      * @param string $function
      * @param BaseRequest $request
-     * @param string $returnType
+     * @param BaseResponse $response
      * @throws \Exception
      */
-    public function invoke($function, BaseRequest $request, $returnType = null)
-    { 
-       if( property_exists($request, 'session'))
+    public function invoke($function, BaseRequest $request, BaseResponse $response)
+    {
+        if (property_exists($request, 'session')) {
             $request->session = $this->session->getId();
-        
-        $result = null;
-        $properClass = null;
+        }
         
         $result = $this->client->__call($function, $request->toArray());
-       
+        
         if ($this->nonWsdlMode) {
-            $properClass = new $returnType($result);
+            $response->fromData($result);
         } else {
-            $properClass = new $returnType();
             
-            foreach ($result as $n => $v)
-                $properClass->$n = $v;
+            foreach ($result as $name => $value) {
+                $response->{$name} = $value;
+            }
         }
-        return $properClass;
+        return $response;
     }
 }

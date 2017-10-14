@@ -6,10 +6,13 @@ use ste80pa\SuiteCRMClient\Types\BaseResponse;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class GetUpcomingActivitiesResponse extends BaseResponse {
+class GetUpcomingActivitiesResponse extends BaseResponse
+{
+
     /**
+     *
      * @var mixed
      */
     public $return;

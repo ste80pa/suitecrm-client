@@ -216,7 +216,7 @@ class Session
         
         $filename = $this->getSessionFile();
         
-        if (!is_file($filename))
+        if (! is_file($filename))
             return false;
         
         $this->info = json_decode(file_get_contents($filename), true);
@@ -243,16 +243,18 @@ class Session
         
         $this->status = self::RESUMED;
         
-        if (! $this->store)
+        if (! $this->store) {
             return;
+        }
         
         if (! is_dir($this->storageFolder)) {
             
-            if (file_exists($this->storageFolder))
+            if (file_exists($this->storageFolder)) {
                 throw new \Exception("{$this->storageFolder} must be a directory");
-            
-            if (! mkdir($this->storageFolder, 0755, true))
+            }
+            if (! mkdir($this->storageFolder, 0755, true)) {
                 throw new \Exception("unable to create {$this->storageFolder} folder.");
+            }
         }
         
         $filename = $this->getSessionFile();
@@ -266,20 +268,19 @@ class Session
         fwrite($handle, json_encode($response));
         fclose($handle);
     }
-    
+
     /**
-     * 
      */
     public function close()
     {
         $filename = $this->getSessionFile();
         
-        if(is_file($filename)) {
+        if (is_file($filename)) {
             unlink($filename);
         }
         
         $this->info = null;
         $this->id = null;
-        $this->status = self::UNKNOWN;      
+        $this->status = self::UNKNOWN;
     }
 }

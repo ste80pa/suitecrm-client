@@ -6,7 +6,8 @@ use ste80pa\SuiteCRMClient\Types\BaseRequest;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class GetServerInfoRequest extends BaseRequest {
+class GetServerInfoRequest extends BaseRequest
+{
 }

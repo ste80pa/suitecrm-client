@@ -10,11 +10,12 @@ use ste80pa\SuiteCRMClient\Types\BaseResponse;
  */
 class SeamlessLoginResponse extends BaseResponse
 {
+
     /**
      *
      * @param int $return
      */
-    public function __construct($return)
+    public function __construct($return = 0)
     {
         $this->return = $return;
     }
@@ -23,5 +24,16 @@ class SeamlessLoginResponse extends BaseResponse
      *
      * @var integer
      */
-    public $return;
+    public $return = 0;
+
+    /**
+     *
+     * {@inheritdoc}
+     * @see \ste80pa\SuiteCRMClient\Types\BaseResponse::fromData()
+     */
+    public function fromData($return = 0)
+    {
+        $this->return = $return;
+        return $this;
+    }
 }

@@ -6,10 +6,13 @@ use ste80pa\SuiteCRMClient\Types\BaseResponse;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class SetEntriesResponse extends BaseResponse {
+class SetEntriesResponse extends BaseResponse
+{
+
     /**
+     *
      * @var mixed
      */
     public $return;

@@ -6,10 +6,14 @@ use ste80pa\SuiteCRMClient\Types\BaseRequest;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class LogoutRequest extends BaseRequest {
+class LogoutRequest extends BaseRequest
+{
+
     /**
+     * Session ID returned by a previous login call.
+     * 
      * @var string
      */
     public $session;

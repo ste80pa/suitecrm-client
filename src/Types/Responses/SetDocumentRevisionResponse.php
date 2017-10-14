@@ -6,10 +6,13 @@ use ste80pa\SuiteCRMClient\Types\BaseResponse;
 /**
  *
  * @author Stefano Pallozzi
- *
+ *        
  */
-class SetDocumentRevisionResponse extends BaseResponse {
+class SetDocumentRevisionResponse extends BaseResponse
+{
+
     /**
+     *
      * @var mixed
      */
     public $return;

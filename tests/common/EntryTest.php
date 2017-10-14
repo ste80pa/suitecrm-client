@@ -43,7 +43,7 @@ abstract class EntryTest extends TestCase
         
         $response = $client->getEntryList($request);
         
-        $this->assertEquals(get_class($response), GetEntryListResponse::class);
+        $this->assertEquals(get_class($response), get_class( new GetEntryListResponse()));
         
         $this->assertObjectHasAttribute('result_count', $response);
         $this->assertObjectHasAttribute('total_count', $response);
@@ -93,7 +93,7 @@ abstract class EntryTest extends TestCase
             
             $response = $client->getEntry($request);
             
-            $this->assertEquals(get_class($response), GetEntryResponse::class);
+            $this->assertEquals(get_class($response), get_class(new GetEntryResponse()));
             $this->assertCount(1, $response->entry_list);
             
             foreach ($response->entry_list as $entry) {
@@ -132,7 +132,7 @@ abstract class EntryTest extends TestCase
        
         $response = $client->getEntries($request);
         
-        $this->assertEquals(get_class($response), GetEntriesResponse::class);
+        $this->assertEquals(get_class($response), get_class( new GetEntriesResponse()));
         $this->assertCount(count($request->ids), $response->entry_list);
         
         foreach ($response->entry_list as $entry) {

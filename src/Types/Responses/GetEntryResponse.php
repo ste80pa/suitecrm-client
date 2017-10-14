@@ -6,8 +6,8 @@ use ste80pa\SuiteCRMClient\Types\BaseResponse;
 /**
  *
  * @author Stefano Pallozzi
- * 
+ *        
  */
-class GetEntryResponse extends BaseResponse {
-    
+class GetEntryResponse extends BaseResponse
+{
 }

@@ -3,6 +3,7 @@ namespace ste80pa\SuiteCRMClient;
 
 use Exception;
 use ste80pa\SuiteCRMClient\Types\BaseRequest;
+use ste80pa\SuiteCRMClient\Types\BaseResponse;
 
 /**
  *
@@ -11,6 +12,7 @@ use ste80pa\SuiteCRMClient\Types\BaseRequest;
  */
 class RestClient extends Client
 {
+
     /**
      *
      * @var string
@@ -22,7 +24,7 @@ class RestClient extends Client
      * @throws \Exception
      */
     public function __construct(Session $session)
-    {   
+    {
         parent::__construct($session);
         
         if (! extension_loaded('curl')) {
@@ -36,10 +38,10 @@ class RestClient extends Client
      *
      * @param string $function
      * @param BaseRequest $request
-     * @param string $returnType
+     * @param BaseResponse $response
      * @throws \Exception
      */
-    public function invoke($function, BaseRequest $request, $returnType = null)
+    public function invoke($function, BaseRequest $request, BaseResponse $response)
     {
         $curl = curl_init();
         
@@ -51,10 +53,9 @@ class RestClient extends Client
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-       
-        if( property_exists($request, 'session'))
-            $request->session = $this->session->getId();
         
+        if (property_exists($request, 'session'))
+            $request->session = $this->session->getId();
         
         $json = json_encode($request);
         
@@ -76,15 +77,9 @@ class RestClient extends Client
         switch ($http_status) {
             case 0:
                 throw new Exception("Host not found");
-                break;
-            
+                break;           
             case 200:
-                
-                if ($returnType == null)
-                    return json_decode($result[1]);
-                else
-                    return new $returnType(json_decode($result[1]));
-                break;
+                 return $response->fromData(json_decode($result[1]));            
             default:
                 throw new Exception("Received " + $http_status);
         }

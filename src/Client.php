@@ -56,6 +56,7 @@ use ste80pa\SuiteCRMClient\Types\Responses\SetEntryResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\SetNoteAttachmentResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\SetRelationshipResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\SetRelationshipsResponse;
+use ste80pa\SuiteCRMClient\Types\BaseResponse;
 
 /**
  *
@@ -81,49 +82,46 @@ abstract class Client
     }
 
     /**
-     * 
+     *
      * @return Session
      */
     public function getSession()
     {
         return $this->session;
     }
+
     /**
      * Parameter types (and order) must be the same as what the current wsdl defines.
      *
      * @param string $function
      * @param BaseRequest $request
-     * @param string $returnType
+     * @param BaseResponse $response
      * @throws \Exception
      */
-    abstract public function invoke($function, BaseRequest $request, $returnType = null);
+    abstract public function invoke($function, BaseRequest $request, BaseResponse $response);
 
-   /**
-    * Logs a user into the Sugar application.
-    */
+    /**
+     * Logs a user into the Sugar application.
+     */
     public function login()
     {
-        
-        if($this->session->usesStorage())
-        {
-            if($this->session->loadSession())
-            {
-                $response = $this->seamlessLogin(new SeamlessLoginRequest($this->session->getId()));
+        if ($this->session->usesStorage()) {
+            if ($this->session->loadSession()) {
+                $valid = $this->seamlessLogin(new SeamlessLoginRequest($this->session->getId()));
                 
-                if($response->return == 1)
-                {
+                if ($valid->return == 1) {
                     return;
                 }
                 
                 $this->session->close();
-            }  
+            }
         }
         
         $request = new LoginRequest($this->session->getUsername(), $this->session->getPassword());
         
-        $response = $this->invoke('login', $request, LoginResponse::class);       
-      
-        $this->session->saveSession($response);        
+        $response = $this->invoke('login', $request,  new LoginResponse());
+        
+        $this->session->saveSession($response);
     }
 
     /**
@@ -132,77 +130,87 @@ abstract class Client
     public function logout()
     {
         $this->session->close();
-        $this->invoke('logout', new LogoutRequest(), LogoutResponse::class);   
+        $this->invoke('logout', new LogoutRequest(), new LogoutResponse());
     }
 
     /**
      * Retrieves a single bean based on record ID.
+     *
      * @param GetEntryRequest $request
      * @return GetEntryResponse
      */
     public function getEntry(GetEntryRequest $request)
     {
-        return $this->invoke('get_entry', $request, GetEntryResponse::class);
+        return $this->invoke('get_entry', $request, new GetEntryResponse());
     }
 
     /**
      * Retrieves a list of beans based on specified record IDs.
+     *
      * @param GetEntriesRequest $request
      * @return GetEntriesResponse
      */
     public function getEntries(GetEntriesRequest $request)
     {
-        return $this->invoke('get_entries', $request, GetEntriesResponse::class);
+        return $this->invoke('get_entries', $request, new GetEntriesResponse());
     }
 
     /**
      * Retrieves a list of beans based on query specifications.
+     *
      * @param GetEntryListRequest $request
      * @return GetEntryListResponse
      */
     public function getEntryList(GetEntryListRequest $request)
     {
-        return $this->invoke('get_entry_list', $request, GetEntryListResponse::class);
+        return $this->invoke('get_entry_list', $request, new GetEntryListResponse());
     }
 
     /**
+     * Sets relationships between two records.
+     * You can relate multiple records to a single record using this.
      *
      * @param SetRelationshipRequest $request
      * @return SetRelationshipResponse
      */
     public function setRelationship(SetRelationshipRequest $request)
     {
-        return $this->invoke('set_relationship', $request, SetRelationshipResponse::class);
+        return $this->invoke('set_relationship', $request, new SetRelationshipResponse());
     }
 
     /**
-     *
+     * Sets multiple relationships between multiple record sets.
+     * 
      * @param SetRelationshipsRequest $request
      * @return SetRelationshipsResponse
      */
     public function setRelationships(SetRelationshipsRequest $request)
     {
-        return $this->invoke('set_relationships', $request, SetRelationshipsResponse::class);
+        return $this->invoke('set_relationships', $request, new SetRelationshipsResponse());
     }
 
     /**
-     *
+     * Retrieves a specific relationship link for a specified record.
+     * 
      * @param GetRelationshipsRequest $request
      * @return GetRelationshipsResponse
      */
     public function getRelationships(GetRelationshipsRequest $request)
     {
-        return $this->invoke('get_relationships', $request, GetRelationshipsResponse::class);
+        return $this->invoke('get_relationships', $request, new GetRelationshipsResponse());
     }
 
     /**
-     *
+     * Creates or updates a specific record.
+     * To update an existing record, you will need to specify 'id' in the name_value_list parameter.
+     * To create a new record with a specific ID, you will need to set 'new_with_id' in the name_value_list parameter.
+     * 
      * @param SetEntryRequest $request
      * @return SetEntryResponse
      */
     public function setEntry(SetEntryRequest $request)
     {
-        return $this->invoke('set_entry', $request, SetEntryResponse::class);
+        return $this->invoke('set_entry', $request, new SetEntryResponse());
     }
 
     /**
@@ -212,7 +220,7 @@ abstract class Client
      */
     public function setEntries(SetEntriesRequest $request)
     {
-        return $this->invoke('set_entries', $request, SetEntriesResponse::class);
+        return $this->invoke('set_entries', $request, new SetEntriesResponse());
     }
 
     /**
@@ -222,7 +230,7 @@ abstract class Client
      */
     public function setServerInfo(GetServerInfoRequest $request)
     {
-        return $this->invoke('get_server_info', $request, GetServerInfoResponse::class);
+        return $this->invoke('get_server_info', $request, new GetServerInfoResponse());
     }
 
     /**
@@ -232,7 +240,7 @@ abstract class Client
      */
     public function getUserId(GetUserIdRequest $request)
     {
-        return $this->invoke('get_user_id', $request, GetUserIdResponse::class);
+        return $this->invoke('get_user_id', $request, new GetUserIdResponse());
     }
 
     /**
@@ -242,17 +250,18 @@ abstract class Client
      */
     public function getModuleFields(GetModuleFieldsRequest $request)
     {
-        return $this->invoke('get_module_fields', $request, GetModuleFieldsResponse::class);
+        return $this->invoke('get_module_fields', $request, new GetModuleFieldsResponse());
     }
 
     /**
      * Verifies that a session is authenticated.
+     *
      * @param SeamlessLoginRequest $request
      * @return SeamlessLoginResponse
      */
     public function seamlessLogin(SeamlessLoginRequest $request)
     {
-        return $this->invoke('seamless_login', $request, SeamlessLoginResponse::class);
+        return $this->invoke('seamless_login', $request, new SeamlessLoginResponse());
     }
 
     /**
@@ -262,7 +271,7 @@ abstract class Client
      */
     public function setNoteAttachment(SetNoteAttachmentRequest $request)
     {
-        return $this->invoke('set_note_attachment', $request, SetNoteAttachmentResponse::class);
+        return $this->invoke('set_note_attachment', $request, new SetNoteAttachmentResponse());
     }
 
     /**
@@ -272,7 +281,7 @@ abstract class Client
      */
     public function getNoteAttachment(GetNoteAttachmentRequest $request)
     {
-        return $this->invoke('get_note_attachment', $request, GetNoteAttachmentResponse::class);
+        return $this->invoke('get_note_attachment', $request, new GetNoteAttachmentResponse());
     }
 
     /**
@@ -282,7 +291,7 @@ abstract class Client
      */
     public function setDocumentRevision(SetDocumentRevisionRequest $request)
     {
-        return $this->invoke('set_document_revision', $request, SetDocumentRevisionResponse::class);
+        return $this->invoke('set_document_revision', $request, new SetDocumentRevisionResponse());
     }
 
     /**
@@ -292,7 +301,7 @@ abstract class Client
      */
     public function getDocumentRevision(GetDocumentRevisionRequest $request)
     {
-        return $this->invoke('get_document_revision', $request, GetDocumentRevisionResponse::class);
+        return $this->invoke('get_document_revision', $request, new GetDocumentRevisionResponse());
     }
 
     /**
@@ -302,7 +311,7 @@ abstract class Client
      */
     public function searchByModule(SearchByModuleRequest $request)
     {
-        return $this->invoke('search_by_module', $request, SearchByModuleResponse::class);
+        return $this->invoke('search_by_module', $request, new SearchByModuleResponse());
     }
 
     /**
@@ -313,7 +322,7 @@ abstract class Client
      */
     public function getAvailableModules(GetAvailableModulesRequest $request)
     {
-        return $this->invoke('get_available_modules', $request, GetAvailableModulesResponse::class);
+        return $this->invoke('get_available_modules', $request, new GetAvailableModulesResponse());
     }
 
     /**
@@ -323,7 +332,7 @@ abstract class Client
      */
     public function getUserTeamId(GetUserTeamIdRequest $request)
     {
-        return $this->invoke('get_user_team_id', $request, GetUserTeamIdResponse::class);
+        return $this->invoke('get_user_team_id', $request, new GetUserTeamIdResponse());
     }
 
     /**
@@ -333,17 +342,18 @@ abstract class Client
      */
     public function setCampaignMerge(SetCampaignMergeRequest $request)
     {
-        return $this->invoke('set_campaign_merge', $request, SetCampaignMergeResponse::class);
+        return $this->invoke('set_campaign_merge', $request, new SetCampaignMergeResponse());
     }
 
     /**
      * Retrieves a list of beans based on query specifications.
+     *
      * @param GetEntriesCountRequest $request
      * @return GetEntriesCountResponse
      */
     public function getEntriesCount(GetEntriesCountRequest $request)
     {
-        return $this->invoke('get_entries_count', $request, GetEntriesCountResponse::class);
+        return $this->invoke('get_entries_count', $request, new GetEntriesCountResponse());
     }
 
     /**
@@ -353,7 +363,7 @@ abstract class Client
      */
     public function getModuleFieldsMd5(GetModuleFieldsMd5Request $request)
     {
-        return $this->invoke('get_module_fields_md5', $request, GetModuleFieldsMd5Response::class);
+        return $this->invoke('get_module_fields_md5', $request, new GetModuleFieldsMd5Response());
     }
 
     /**
@@ -363,7 +373,7 @@ abstract class Client
      */
     public function getLastViewed(GetLastViewedRequest $request)
     {
-        return $this->invoke('get_last_viewed', $request, GetLastViewedResponse::class);
+        return $this->invoke('get_last_viewed', $request, new GetLastViewedResponse());
     }
 
     /**
@@ -373,7 +383,7 @@ abstract class Client
      */
     public function getUpcomingActivities(GetUpcomingActivitiesRequest $request)
     {
-        return $this->invoke('get_upcoming_activities', $request, GetUpcomingActivitiesResponse::class);
+        return $this->invoke('get_upcoming_activities', $request, new GetUpcomingActivitiesResponse());
     }
 
     /**
@@ -383,6 +393,6 @@ abstract class Client
      */
     public function getModifiedRelationships(GetModifiedRelationshipsRequest $request)
     {
-        return $this->invoke('get_modified_relationships', $request, GetModifiedRelationshipsResponse::class);
+        return $this->invoke('get_modified_relationships', $request, new GetModifiedRelationshipsResponse());
     }
 }
