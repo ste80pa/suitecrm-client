@@ -15,9 +15,17 @@ php:
   - '7.0'
   - '7.1'
 
+install:
+  - curl -s http://getcomposer.org/installer | php
+  - php composer.phar install --dev --no-interaction
+
 before_script:
   - composer self-update
   - composer install --prefer-source --no-interaction --dev
 
 script:
-  - vendor/bin/phpunit --no-coverage
+  - mkdir -p build/logs
+  - php vendor/bin/phpunit
+
+after_success:
+  - travis_retry php vendor/bin/coveralls
