@@ -99,7 +99,7 @@ abstract class Client
     abstract public function invoke($function, BaseRequest $request, $returnType = null);
 
    /**
-    * 
+    * Logs a user into the Sugar application.
     */
     public function login()
     {
@@ -108,7 +108,14 @@ abstract class Client
         {
             if($this->session->loadSession())
             {
-                return;
+                $response = $this->seamlessLogin(new SeamlessLoginRequest($this->session->getId()));
+                
+                if($response->return == 1)
+                {
+                    return;
+                }
+                
+                $this->session->close();
             }  
         }
         
@@ -119,9 +126,8 @@ abstract class Client
         $this->session->saveSession($response);        
     }
 
-   
     /**
-     * 
+     * Logs a user out of the Sugar application.
      */
     public function logout()
     {
@@ -130,7 +136,7 @@ abstract class Client
     }
 
     /**
-     *
+     * Retrieves a single bean based on record ID.
      * @param GetEntryRequest $request
      * @return GetEntryResponse
      */
@@ -140,7 +146,7 @@ abstract class Client
     }
 
     /**
-     *
+     * Retrieves a list of beans based on specified record IDs.
      * @param GetEntriesRequest $request
      * @return GetEntriesResponse
      */
@@ -150,7 +156,7 @@ abstract class Client
     }
 
     /**
-     *
+     * Retrieves a list of beans based on query specifications.
      * @param GetEntryListRequest $request
      * @return GetEntryListResponse
      */
@@ -240,7 +246,7 @@ abstract class Client
     }
 
     /**
-     *
+     * Verifies that a session is authenticated.
      * @param SeamlessLoginRequest $request
      * @return SeamlessLoginResponse
      */
@@ -331,7 +337,7 @@ abstract class Client
     }
 
     /**
-     *
+     * Retrieves a list of beans based on query specifications.
      * @param GetEntriesCountRequest $request
      * @return GetEntriesCountResponse
      */

@@ -52,7 +52,7 @@ class RestClient extends Client
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 0);
        
-        if(isset($request->session))
+        if( property_exists($request, 'session'))
             $request->session = $this->session->getId();
         
         

@@ -38,7 +38,9 @@ class SoapClient extends Client
             // 'entry_list' => NameValueList::class,
         ),
         
-        'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9
+        'compression' => SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9,
+        'exceptions' => 1,
+        'trace' => 0
     );
 
     /**
@@ -95,14 +97,14 @@ class SoapClient extends Client
      */
     public function invoke($function, BaseRequest $request, $returnType = null)
     { 
-        if(isset($request->session))
+       if( property_exists($request, 'session'))
             $request->session = $this->session->getId();
         
         $result = null;
         $properClass = null;
         
         $result = $this->client->__call($function, $request->toArray());
-        
+       
         if ($this->nonWsdlMode) {
             $properClass = new $returnType($result);
         } else {

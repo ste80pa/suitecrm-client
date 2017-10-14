@@ -12,8 +12,8 @@ final class SoapAuthenticationTest extends TestCase
 {
 
     /**
+     * @covers ste80pa\SuiteCRMClient\SoapClient::__construct
      * @covers ste80pa\SuiteCRMClient\Client::login
-     * @covers ste80pa\SuiteCRMClient\SoapClient::login
      */
     public function testLogin()
     {

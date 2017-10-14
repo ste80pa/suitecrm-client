@@ -13,4 +13,14 @@ class SeamlessLoginRequest extends BaseRequest {
      * @var string
      */
     public $session;
+    
+    /**
+     * 
+     * @param string $session
+     */
+    public function __construct($session)
+    {
+        $this->session = $session;
+    }
+   
 }
