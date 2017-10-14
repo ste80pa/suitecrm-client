@@ -1,5 +1,6 @@
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.3-8892BF.svg)](https://php.net/)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.5-8892BF.svg)](https://php.net/)
 [![Build Status](https://travis-ci.org/ste80pa/suitecrm-client.svg?branch=master)](https://travis-ci.org/ste80pa/suitecrm-client)
+[![Coverage Status](https://coveralls.io/repos/github/ste80pa/suitecrm-client/badge.svg?branch=master)](https://coveralls.io/github/ste80pa/suitecrm-client?branch=master)
 
 ## Synopsis
 
