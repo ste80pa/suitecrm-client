@@ -29,7 +29,6 @@ use ste80pa\SuiteCRMClient\Types\Requests\SetEntryRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\SetNoteAttachmentRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\SetRelationshipRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\SetRelationshipsRequest;
-
 use ste80pa\SuiteCRMClient\Types\Responses\GetAvailableModulesResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\GetDocumentRevisionResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\GetEntriesCountResponse;
@@ -57,256 +56,327 @@ use ste80pa\SuiteCRMClient\Types\Responses\SetEntryResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\SetNoteAttachmentResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\SetRelationshipResponse;
 use ste80pa\SuiteCRMClient\Types\Responses\SetRelationshipsResponse;
+
 /**
- * 
- * @author Stefano Pallozzi
  *
+ * @author Stefano Pallozzi
+ *        
  */
 abstract class Client
 {
+
     /**
      *
-     * @var array
+     * @var Session
      */
     protected $session = null;
-    
+
     /**
-    * Parameter types (and order) must be the same as what the current wsdl defines.
-    *
-    * @param string $function
-    * @param BaseRequest $request
-    * @param string $returnType
-    * @throws \Exception
-    */
-    abstract public function Invoke($function, BaseRequest $request, $returnType = null);
-    
-    /**
-     * @param LoginRequest $request
-     * @return LoginResponse
+     *
+     * @param Session $session
      */
-    function Login(LoginRequest $request)
+    public function __construct(Session $session)
     {
-        if (file_exists("session.json")) {
-            $this->session = json_decode(file_get_contents("session.json"));
-            return;
-        }
-        
-        $this->session = $this->Invoke('login', $request, LoginResponse::class);
-        file_put_contents("session.json", json_encode($this->session));
+        $this->session = $session;
+    }
+
+    /**
+     * 
+     * @return Session
+     */
+    public function getSession()
+    {
         return $this->session;
     }
     /**
-     * 
-     * @return LogoutResponse
+     * Parameter types (and order) must be the same as what the current wsdl defines.
+     *
+     * @param string $function
+     * @param BaseRequest $request
+     * @param string $returnType
+     * @throws \Exception
      */
-    function Logout()
+    abstract public function invoke($function, BaseRequest $request, $returnType = null);
+
+   /**
+    * 
+    */
+    public function login()
     {
         
-        if (file_exists("session.json"))
-            unlink("session.json");
-            
-        $this->Invoke('logout', new LogoutRequest(), LogoutResponse::class);
-        return new LogoutResponse();
+        if($this->session->usesStorage())
+        {
+            if($this->session->loadSession())
+            {
+                return;
+            }  
+        }
+        
+        $request = new LoginRequest($this->session->getUsername(), $this->session->getPassword());
+        
+        $response = $this->invoke('login', $request, LoginResponse::class);       
+      
+        $this->session->saveSession($response);        
     }
+
+   
     /**
-     * @param GetEntryRequest$request
+     * 
+     */
+    public function logout()
+    {
+        $this->session->close();
+        $this->invoke('logout', new LogoutRequest(), LogoutResponse::class);   
+    }
+
+    /**
+     *
+     * @param GetEntryRequest $request
      * @return GetEntryResponse
      */
-    function GetEntry(GetEntryRequest $request)
+    public function getEntry(GetEntryRequest $request)
     {
-        return $this->Invoke('get_entry', $request, GetEntryResponse::class);
+        return $this->invoke('get_entry', $request, GetEntryResponse::class);
     }
+
     /**
-     * @param GetEntriesRequest$request
+     *
+     * @param GetEntriesRequest $request
      * @return GetEntriesResponse
      */
-    function GetEntries(GetEntriesRequest $request)
+    public function getEntries(GetEntriesRequest $request)
     {
-        return $this->Invoke('get_entries', $request, GetEntriesResponse::class);
+        return $this->invoke('get_entries', $request, GetEntriesResponse::class);
     }
+
     /**
-     * @param GetEntryListRequest$request
+     *
+     * @param GetEntryListRequest $request
      * @return GetEntryListResponse
      */
-    function GetEntryList(GetEntryListRequest $request)
+    public function getEntryList(GetEntryListRequest $request)
     {
-        return $this->Invoke('get_entry_list', $request, GetEntryListResponse::class);
+        return $this->invoke('get_entry_list', $request, GetEntryListResponse::class);
     }
+
     /**
-     * @param SetRelationshipRequest$request
+     *
+     * @param SetRelationshipRequest $request
      * @return SetRelationshipResponse
      */
-    function SetRelationship(SetRelationshipRequest $request)
+    public function setRelationship(SetRelationshipRequest $request)
     {
-        return $this->Invoke('set_relationship', $request, SetRelationshipResponse::class);
+        return $this->invoke('set_relationship', $request, SetRelationshipResponse::class);
     }
+
     /**
-     * @param SetRelationshipsRequest$request
+     *
+     * @param SetRelationshipsRequest $request
      * @return SetRelationshipsResponse
      */
-    function SetRelationships(SetRelationshipsRequest $request)
+    public function setRelationships(SetRelationshipsRequest $request)
     {
-        return $this->Invoke('set_relationships', $request, SetRelationshipsResponse::class);
+        return $this->invoke('set_relationships', $request, SetRelationshipsResponse::class);
     }
+
     /**
-     * @param GetRelationshipsRequest$request
+     *
+     * @param GetRelationshipsRequest $request
      * @return GetRelationshipsResponse
      */
-    function GetRelationships(GetRelationshipsRequest $request)
+    public function getRelationships(GetRelationshipsRequest $request)
     {
-        return $this->Invoke('get_relationships', $request, GetRelationshipsResponse::class);
+        return $this->invoke('get_relationships', $request, GetRelationshipsResponse::class);
     }
+
     /**
-     * @param SetEntryRequest$request
+     *
+     * @param SetEntryRequest $request
      * @return SetEntryResponse
      */
-    function SetEntry(SetEntryRequest $request)
+    public function setEntry(SetEntryRequest $request)
     {
-        return $this->Invoke('set_entry', $request, SetEntryResponse::class);
+        return $this->invoke('set_entry', $request, SetEntryResponse::class);
     }
+
     /**
-     * @param SetEntriesRequest$request
+     *
+     * @param SetEntriesRequest $request
      * @return SetEntriesResponse
      */
-    function SetEntries(SetEntriesRequest $request)
+    public function setEntries(SetEntriesRequest $request)
     {
-        return $this->Invoke('set_entries', $request, SetEntriesResponse::class);
+        return $this->invoke('set_entries', $request, SetEntriesResponse::class);
     }
+
     /**
-     * @param GetServerInfoRequest$request
+     *
+     * @param GetServerInfoRequest $request
      * @return GetServerInfoResponse
      */
-    function GetServerInfo(GetServerInfoRequest $request)
+    public function setServerInfo(GetServerInfoRequest $request)
     {
-        return $this->Invoke('get_server_info', $request, GetServerInfoResponse::class);
+        return $this->invoke('get_server_info', $request, GetServerInfoResponse::class);
     }
+
     /**
-     * @param GetUserIdRequest$request
+     *
+     * @param GetUserIdRequest $request
      * @return GetUserIdResponse
      */
-    function GetUserId(GetUserIdRequest $request)
+    public function getUserId(GetUserIdRequest $request)
     {
-        return $this->Invoke('get_user_id', $request, GetUserIdResponse::class);
+        return $this->invoke('get_user_id', $request, GetUserIdResponse::class);
     }
+
     /**
-     * @param GetModuleFieldsRequest$request
+     *
+     * @param GetModuleFieldsRequest $request
      * @return GetModuleFieldsResponse
      */
-    function GetModuleFields(GetModuleFieldsRequest $request)
+    public function getModuleFields(GetModuleFieldsRequest $request)
     {
-        return $this->Invoke('get_module_fields', $request, GetModuleFieldsResponse::class);
+        return $this->invoke('get_module_fields', $request, GetModuleFieldsResponse::class);
     }
+
     /**
-     * @param SeamlessLoginRequest$request
+     *
+     * @param SeamlessLoginRequest $request
      * @return SeamlessLoginResponse
      */
-    function SeamlessLogin(SeamlessLoginRequest $request)
+    public function seamlessLogin(SeamlessLoginRequest $request)
     {
-        return $this->Invoke('seamless_login', $request, SeamlessLoginResponse::class);
+        return $this->invoke('seamless_login', $request, SeamlessLoginResponse::class);
     }
+
     /**
-     * @param SetNoteAttachmentRequest$request
+     *
+     * @param SetNoteAttachmentRequest $request
      * @return SetNoteAttachmentResponse
      */
-    function SetNoteAttachment(SetNoteAttachmentRequest $request)
+    public function setNoteAttachment(SetNoteAttachmentRequest $request)
     {
-        return $this->Invoke('set_note_attachment', $request, SetNoteAttachmentResponse::class);
+        return $this->invoke('set_note_attachment', $request, SetNoteAttachmentResponse::class);
     }
+
     /**
-     * @param GetNoteAttachmentRequest$request
+     *
+     * @param GetNoteAttachmentRequest $request
      * @return GetNoteAttachmentResponse
      */
-    function GetNoteAttachment(GetNoteAttachmentRequest $request)
+    public function getNoteAttachment(GetNoteAttachmentRequest $request)
     {
-        return $this->Invoke('get_note_attachment', $request, GetNoteAttachmentResponse::class);
+        return $this->invoke('get_note_attachment', $request, GetNoteAttachmentResponse::class);
     }
+
     /**
-     * @param SetDocumentRevisionRequest$request
+     *
+     * @param SetDocumentRevisionRequest $request
      * @return SetDocumentRevisionResponse
      */
-    function SetDocumentRevision(SetDocumentRevisionRequest $request)
+    public function setDocumentRevision(SetDocumentRevisionRequest $request)
     {
-        return $this->Invoke('set_document_revision', $request, SetDocumentRevisionResponse::class);
+        return $this->invoke('set_document_revision', $request, SetDocumentRevisionResponse::class);
     }
+
     /**
-     * @param GetDocumentRevisionRequest$request
+     *
+     * @param GetDocumentRevisionRequest $request
      * @return GetDocumentRevisionResponse
      */
-    function GetDocumentRevision(GetDocumentRevisionRequest $request)
+    public function getDocumentRevision(GetDocumentRevisionRequest $request)
     {
-        return $this->Invoke('get_document_revision', $request, GetDocumentRevisionResponse::class);
+        return $this->invoke('get_document_revision', $request, GetDocumentRevisionResponse::class);
     }
+
     /**
-     * @param SearchByModuleRequest$request
+     *
+     * @param SearchByModuleRequest $request
      * @return SearchByModuleResponse
      */
-    function SearchByModule(SearchByModuleRequest $request)
+    public function searchByModule(SearchByModuleRequest $request)
     {
-        return $this->Invoke('search_by_module', $request, SearchByModuleResponse::class);
+        return $this->invoke('search_by_module', $request, SearchByModuleResponse::class);
     }
+
     /**
-     * @param GetAvailableModulesRequest$request
+     *
+     * @param
+     *            GetAvailableModulesRequest$request
      * @return GetAvailableModulesResponse
      */
-    function GetAvailableModules(GetAvailableModulesRequest $request)
+    public function getAvailableModules(GetAvailableModulesRequest $request)
     {
-        return $this->Invoke('get_available_modules', $request, GetAvailableModulesResponse::class);
+        return $this->invoke('get_available_modules', $request, GetAvailableModulesResponse::class);
     }
+
     /**
-     * @param GetUserTeamIdRequest$request
+     *
+     * @param GetUserTeamIdRequest $request
      * @return GetUserTeamIdResponse
      */
-    function GetUserTeamId(GetUserTeamIdRequest $request)
+    public function getUserTeamId(GetUserTeamIdRequest $request)
     {
-        return $this->Invoke('get_user_team_id', $request, GetUserTeamIdResponse::class);
+        return $this->invoke('get_user_team_id', $request, GetUserTeamIdResponse::class);
     }
+
     /**
-     * @param SetCampaignMergeRequest$request
+     *
+     * @param SetCampaignMergeRequest $request
      * @return SetCampaignMergeResponse
      */
-    function SetCampaignMerge(SetCampaignMergeRequest $request)
+    public function setCampaignMerge(SetCampaignMergeRequest $request)
     {
-        return $this->Invoke('set_campaign_merge', $request, SetCampaignMergeResponse::class);
+        return $this->invoke('set_campaign_merge', $request, SetCampaignMergeResponse::class);
     }
+
     /**
-     * @param GetEntriesCountRequest$request
+     *
+     * @param GetEntriesCountRequest $request
      * @return GetEntriesCountResponse
      */
-    function GetEntriesCount(GetEntriesCountRequest $request)
+    public function getEntriesCount(GetEntriesCountRequest $request)
     {
-        return $this->Invoke('get_entries_count', $request, GetEntriesCountResponse::class);
+        return $this->invoke('get_entries_count', $request, GetEntriesCountResponse::class);
     }
+
     /**
-     * @param GetModuleFieldsMd5Request$request
+     *
+     * @param GetModuleFieldsMd5Request $request
      * @return GetModuleFieldsMd5Response
      */
-    function GetModuleFieldsMd5(GetModuleFieldsMd5Request $request)
+    public function getModuleFieldsMd5(GetModuleFieldsMd5Request $request)
     {
-        return $this->Invoke('get_module_fields_md5', $request, GetModuleFieldsMd5Response::class);
+        return $this->invoke('get_module_fields_md5', $request, GetModuleFieldsMd5Response::class);
     }
+
     /**
-     * @param GetLastViewedRequest$request
+     *
+     * @param GetLastViewedRequest $request
      * @return GetLastViewedResponse
      */
-    function GetLastViewed(GetLastViewedRequest $request)
+    public function getLastViewed(GetLastViewedRequest $request)
     {
-        return $this->Invoke('get_last_viewed', $request, GetLastViewedResponse::class);
+        return $this->invoke('get_last_viewed', $request, GetLastViewedResponse::class);
     }
+
     /**
-     * @param GetUpcomingActivitiesRequest$request
+     *
+     * @param GetUpcomingActivitiesRequest $request
      * @return GetUpcomingActivitiesResponse
      */
-    function GetUpcomingActivities(GetUpcomingActivitiesRequest $request)
+    public function getUpcomingActivities(GetUpcomingActivitiesRequest $request)
     {
-        return $this->Invoke('get_upcoming_activities', $request, GetUpcomingActivitiesResponse::class);
+        return $this->invoke('get_upcoming_activities', $request, GetUpcomingActivitiesResponse::class);
     }
-    
+
     /**
-     * @param GetModifiedRelationshipsRequest$request
+     *
+     * @param GetModifiedRelationshipsRequest $request
      * @return GetModifiedRelationshipsResponse
      */
-    function GetModifiedRelationships(GetModifiedRelationshipsRequest $request)
+    public function getModifiedRelationships(GetModifiedRelationshipsRequest $request)
     {
-        return $this->Invoke('get_modified_relationships', $request, GetModifiedRelationshipsResponse::class);
+        return $this->invoke('get_modified_relationships', $request, GetModifiedRelationshipsResponse::class);
     }
 }

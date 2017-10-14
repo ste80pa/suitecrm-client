@@ -11,6 +11,7 @@ abstract class EntryTest extends AuthenticatedTest
 {
 
     /**
+     * @covers ste80pa\SuiteCRMClient\Client::getEntryList
      */
     public function testGetEntiesList()
     {
@@ -23,7 +24,8 @@ abstract class EntryTest extends AuthenticatedTest
         $request->max_results = 5;
         $request->favorites = false;
         
-        $response = $this->client->GetEntryList($request);
+        $response = $this->client->getEntryList($request);
+        
         $this->assertEquals(get_class($response), GetEntryListResponse::class);
     }
 }

@@ -43,25 +43,27 @@ class SoapClient extends Client
 
     /**
      *
-     * @param string $url
-     *            url for suite crm in example http://suitecrm.doamin.local
-     * @param string $verion
-     *            version
+     * @param Session $session
      * @param boolean $nonWsdlMode
-     *            if true works in non wsdl mode. Preferred due a bug in PhpSoap that cause memeory exausting exception @see https://bugs.php.net/bug.php?id=70900
+     *            if true works in non wsdl mode. Preferred due a bug in PhpSoap that cause memeory exausting exception.
+     *            For details see <a href="https://bugs.php.net/bug.php?id=70900">https://bugs.php.net/bug.php?id=70900</a>
      * @param array $options
-     *            options @see http://php.net/manual/en/soapclient.soapclient.php
+     *            For detailed options see <a href="http://php.net/manual/en/soapclient.soapclient.php">http://php.net/manual/en/soapclient.soapclient.php</a>
      * @throws \Exception
      */
-    public function __construct($url, $version = 'v4_1', $nonWsdlMode = true, $options = array())
+    public function __construct(Session $session, $nonWsdlMode = true, $options = array())
     {
+        parent::__construct($session);
+        
         if (! extension_loaded('soap')) {
             throw new \Exception("Soap Extention is required");
         }
         
-        $this->nonWsdlMode = $nonWsdlMode;
+        $wsdl    = null;
+        $url     = $session->getUrl();
+        $version = $session->getEndpointVersion();
         
-        $wsdl = null;
+        $this->nonWsdlMode = $nonWsdlMode;
         
         if ($nonWsdlMode) {
             $this->options['location'] = "{$url}/service/{$version}/soap.php";
@@ -91,12 +93,10 @@ class SoapClient extends Client
      * @param string $returnType
      * @throws \Exception
      */
-    public function Invoke($function, BaseRequest $request, $returnType = null)
-    {
-        if (isset($this->session) && ! empty($this->session)) {
-            if ($request->session == null)
-                $request->session = $this->session->id;
-        }
+    public function invoke($function, BaseRequest $request, $returnType = null)
+    { 
+        if(isset($request->session))
+            $request->session = $this->session->getId();
         
         $result = null;
         $properClass = null;

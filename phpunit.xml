@@ -1,30 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
-         bootstrap="phpunit-bootstrap.php" 
-         stopOnError="false"
-         stopOnFailure="false"
-         stopOnIncomplete="false"
-         stopOnSkipped="false"
-         stopOnRisky="false"
-         verbose="false"
-         colors="true"
-        >
-    <testsuites>
-        <testsuite name="auth">
-            <file>./test/RestAuthenticationTest.php</file>
-            <file>./test/SoapAuthenticationTest.php</file>
-        </testsuite>
-        <testsuite name="entry">
-            <file>./test/RestEntryTest.php</file>
-            <file>./test/SoapEntryTest.php</file>  
-        </testsuite>
-    </testsuites>
-    <!-- CONFIGURATION -->
-    <php>
-	<includePath>./test/common</includePath>
-        <var name="suitecrm_host" value="https://demo.suiteondemand.com"/>
-        <var name="suitecrm_username"  value="will"/>
-        <var name="suitecrm_password"  value="will"/>
-    </php>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
+	bootstrap="phpunit-bootstrap.php" stopOnError="false" stopOnFailure="false"
+	stopOnIncomplete="false" stopOnSkipped="false" stopOnRisky="false"
+	verbose="false" colors="true">
+	
+	<!-- CONFIGURATION -->
+	<php>
+		<includePath>./tests/common</includePath>
+		<var name="suitecrm_host" value="https://demo.suiteondemand.com" />
+		<var name="suitecrm_username" value="will" />
+		<var name="suitecrm_password" value="will" />	
+	</php>
+		
+	<testsuites>
+		<testsuite name="session">
+			<file>tests/SessionTest</file>
+		</testsuite>
+		<testsuite name="auth">
+			<file>tests/RestAuthenticationTest.php</file>
+			<file>tests/SoapAuthenticationTest.php</file>
+		</testsuite>
+		<testsuite name="entry">
+			<file>tests/RestEntryTest.php</file>
+			<file>tests/SoapEntryTest.php</file>			
+		</testsuite>
+	</testsuites>
+	
+	<logging>
+	
+		<log type="coverage-html" target="./build/" lowUpperBound="35"
+			highLowerBound="70" />
+	</logging>
+	
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true" addUncoveredFilesFromWhitelist="true">
+			<file>src/Client.php</file>
+			<file>src/RestClient.php</file>
+			<file>src/SoapClient.php</file>
+			<file>src/Types/BaseRequest.php</file>
+			<file>src/Types/BaseResponse.php</file>
+			<file>src/Types/EntryValue.php</file>
+			<file>src/Types/LinkList.php</file>
+			<file>src/Types/LinkNameValue.php</file>
+			<file>src/Types/LinkValue.php</file>
+			<file>src/Types/Requests/GetAvailableModulesRequest.php</file>
+			<file>src/Types/Requests/GetDocumentRevisionRequest.php</file>
+			<file>src/Types/Requests/GetEntriesCountRequest.php</file>
+			<file>src/Types/Requests/GetEntriesRequest.php</file>
+			<file>src/Types/Requests/GetEntryListRequest.php</file>
+			<file>src/Types/Requests/GetEntryRequest.php</file>
+			<file>src/Types/Requests/GetLastViewedRequest.php</file>
+			<file>src/Types/Requests/GetModifiedRelationshipsRequest.php</file>
+			<file>src/Types/Requests/GetModuleFieldsMd5Request.php</file>
+			<file>src/Types/Requests/GetModuleFieldsRequest.php</file>
+			<file>src/Types/Requests/GetNoteAttachmentRequest.php</file>
+			<file>src/Types/Requests/GetRelationshipsRequest.php</file>
+			<file>src/Types/Requests/GetServerInfoRequest.php</file>
+			<file>src/Types/Requests/GetUpcomingActivitiesRequest.php</file>
+			<file>src/Types/Requests/GetUserIdRequest.php</file>
+			<file>src/Types/Requests/GetUserTeamIdRequest.php</file>
+			<file>src/Types/Requests/LoginRequest.php</file>
+			<file>src/Types/Requests/LogoutRequest.php</file>
+			<file>src/Types/Requests/SeamlessLoginRequest.php</file>
+			<file>src/Types/Requests/SearchByModuleRequest.php</file>
+			<file>src/Types/Requests/SetCampaignMergeRequest.php</file>
+			<file>src/Types/Requests/SetDocumentRevisionRequest.php</file>
+			<file>src/Types/Requests/SetEntriesRequest.php</file>
+			<file>src/Types/Requests/SetEntryRequest.php</file>
+			<file>src/Types/Requests/SetNoteAttachmentRequest.php</file>
+			<file>src/Types/Requests/SetRelationshipRequest.php</file>
+			<file>src/Types/Requests/SetRelationshipsRequest.php</file>
+			<file>src/Types/Responses/GetAvailableModulesResponse.php</file>
+			<file>src/Types/Responses/GetDocumentRevisionResponse.php</file>
+			<file>src/Types/Responses/GetEntriesCountResponse.php</file>
+			<file>src/Types/Responses/GetEntriesResponse.php</file>
+			<file>src/Types/Responses/GetEntryListResponse.php</file>
+			<file>src/Types/Responses/GetEntryResponse.php</file>
+			<file>src/Types/Responses/GetLastViewedResponse.php</file>
+			<file>src/Types/Responses/GetModifiedRelationshipsResponse.php</file>
+			<file>src/Types/Responses/GetModuleFieldsMd5Response.php</file>
+			<file>src/Types/Responses/GetModuleFieldsResponse.php</file>
+			<file>src/Types/Responses/GetNoteAttachmentResponse.php</file>
+			<file>src/Types/Responses/GetRelationshipsResponse.php</file>
+			<file>src/Types/Responses/GetServerInfoResponse.php</file>
+			<file>src/Types/Responses/GetUpcomingActivitiesResponse.php</file>
+			<file>src/Types/Responses/GetUserIdResponse.php</file>
+			<file>src/Types/Responses/GetUserTeamIdResponse.php</file>
+			<file>src/Types/Responses/LoginResponse.php</file>
+			<file>src/Types/Responses/LogoutResponse.php</file>
+			<file>src/Types/Responses/SeamlessLoginResponse.php</file>
+			<file>src/Types/Responses/SearchByModuleResponse.php</file>
+			<file>src/Types/Responses/SetCampaignMergeResponse.php</file>
+			<file>src/Types/Responses/SetDocumentRevisionResponse.php</file>
+			<file>src/Types/Responses/SetEntriesResponse.php</file>
+			<file>src/Types/Responses/SetEntryResponse.php</file>
+			<file>src/Types/Responses/SetNoteAttachmentResponse.php</file>
+			<file>src/Types/Responses/SetRelationshipResponse.php</file>
+			<file>src/Types/Responses/SetRelationshipsResponse.php</file>
+		</whitelist>
+	</filter>
 </phpunit>
-

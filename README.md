@@ -3,7 +3,7 @@
 
 ## Synopsis
 
-Simple library for cummication with SuiteCRM via Soap or Restful API endpoints
+Simple library to communicate with SuiteCRM via Soap or Restful endpoints
 
 ## Code Example
 
@@ -17,13 +17,17 @@ include('vendor/autoload.php');
 use ste80pa\SuiteCRMClient\Types\Requests\GetEntryListRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\LoginRequest;
 use ste80pa\SuiteCRMClient\SoapClient;
+use ste80pa\SuiteCRMClient\Session;
 
 $url = 'your sugar crm host';
 $username = 'your username';
 $password = 'your password';
 
-$soap = new SoapClient($url);
-$soap->Login(new LoginRequest($username, $password));
+$session = new Session($url, $username, $password);
+
+$client = new SoapClient($session);
+
+$client->login();
 
 $request = new GetEntryListRequest();
 
@@ -33,7 +37,7 @@ $request->max_results   = 100;
 $request->favorites     = false;
 $request->deleted       = 1;
  
-$accounts = $soap->GetEntryList($request); 
+$accounts = $client->getEntryList($request); 
 
 print_r($accounts);
 
@@ -49,13 +53,17 @@ include('vendor/autoload.php');
 use ste80pa\SuiteCRMClient\Types\Requests\GetEntryListRequest;
 use ste80pa\SuiteCRMClient\Types\Requests\LoginRequest;
 use ste80pa\SuiteCRMClient\RestClient;
+use ste80pa\SuiteCRMClient\Session;
 
 $url = 'your sugar crm host';
 $username = 'your username';
 $password = 'your password';
 
-$soap = new RestClient($url);
-$soap->Login(new LoginRequest($username, $password));
+$session = new Session($url, $username, $password);
+
+$client = new RestClient($session);
+
+$client->login();
 
 $request = new GetEntryListRequest();
 
@@ -65,7 +73,7 @@ $request->max_results   = 100;
 $request->favorites     = false;
 $request->deleted       = 1;
  
-$accounts = $soap->GetEntryList($request); 
+$accounts = $client->getEntryList($request); 
 
 print_r($accounts);
 

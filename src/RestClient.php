@@ -11,24 +11,25 @@ use ste80pa\SuiteCRMClient\Types\BaseRequest;
  */
 class RestClient extends Client
 {
-
     /**
      *
      * @var string
      */
-    protected $url = null;
+    protected $endopoint = null;
 
     /**
      *
      * @throws \Exception
      */
-    public function __construct($url, $version = 'v4_1')
-    {
+    public function __construct(Session $session)
+    {   
+        parent::__construct($session);
+        
         if (! extension_loaded('curl')) {
             throw new Exception("Curl Extention is required");
         }
         
-        $this->url = "{$url}/service/{$version}/rest.php";
+        $this->endopoint = "{$session->getUrl()}/service/{$session->getEndpointVersion()}/rest.php";
     }
 
     /**
@@ -38,11 +39,11 @@ class RestClient extends Client
      * @param string $returnType
      * @throws \Exception
      */
-    public function Invoke($function, BaseRequest $request, $returnType = null)
+    public function invoke($function, BaseRequest $request, $returnType = null)
     {
         $curl = curl_init();
         
-        curl_setopt($curl, CURLOPT_URL, $this->url);
+        curl_setopt($curl, CURLOPT_URL, $this->endopoint);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
         curl_setopt($curl, CURLOPT_HEADER, 1);
@@ -50,11 +51,10 @@ class RestClient extends Client
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 0);
+       
+        if(isset($request->session))
+            $request->session = $this->session->getId();
         
-        if (isset($this->session) && ! empty($this->session)) {
-            if ($request->session == null)
-                $request->session = $this->session->id;
-        }
         
         $json = json_encode($request);
         

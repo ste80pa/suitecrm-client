@@ -22,6 +22,12 @@ class LoginRequest extends BaseRequest {
      */
     public $name_value_list = array();
     
+    /**
+     * 
+     * @param string $username
+     * @param string $password
+     * @param string $version
+     */
     public function __construct($username, $password, $version = '1'){
         $this->user_auth = array
         (
